@@ -42,10 +42,9 @@ WORK_Y1, WORK_Y2 = 150, 495
 COLORS = [CYAN, PINK, GREEN, YELLOW, BLUE]
 SHAPES = ["SQUARE", "TRIANGLE", "HEXAGON"]
 
+# ---------------- ONLY ONE OBJECT ----------------
 original_objects = [
-    {"x": 610, "y": 330, "size": 42, "color": CYAN},
-    {"x": 780, "y": 330, "size": 42, "color": PINK},
-    {"x": 950, "y": 330, "size": 42, "color": GREEN}
+    {"x": 780, "y": 330, "size": 42, "color": CYAN}
 ]
 
 objects = []
@@ -56,7 +55,7 @@ for i, item in enumerate(original_objects):
         "scale": 1.0,
         "angle": 0.0,
         "shape_index": 0,
-        "color_index": i
+        "color_index": 0
     })
     objects.append(obj)
 
@@ -117,10 +116,7 @@ def draw_text(text, x, y, color=WHITE, selected_font=small):
 
 
 def draw_panel(rect, color):
-    pygame.draw.rect(
-        screen, color, rect,
-        border_radius=12
-    )
+    pygame.draw.rect(screen, color, rect, border_radius=12)
 
 
 def smooth_value(current, target, factor):
@@ -143,8 +139,8 @@ def reset_all_objects():
         obj["scale"] = 1.0
         obj["angle"] = 0.0
         obj["shape_index"] = 0
-        obj["color_index"] = i
-        obj["color"] = COLORS[i]
+        obj["color_index"] = 0
+        obj["color"] = COLORS[0]
 
     active_object = objects[0]
     selected_object = None
@@ -413,14 +409,14 @@ def draw_interface(camera_frame, detected_hands):
         35, 480, GREEN
     )
 
-    # Object workspace
+    # Single object workspace
     draw_panel(
         (475, 110, 610, 390),
         (25, 40, 70)
     )
 
     draw_text(
-        "INTERACTIVE OBJECTS",
+        "INTERACTIVE OBJECT",
         620, 120, YELLOW, font
     )
 
@@ -436,7 +432,7 @@ def draw_interface(camera_frame, detected_hands):
             selected=(obj is selected_object)
         )
 
-    # Separate instructions panel
+    # Instructions panel
     draw_panel(
         (475, 510, 610, 75),
         (25, 40, 70)
@@ -604,7 +600,7 @@ def run_application():
                 elif event.type == pygame.MOUSEBUTTONDOWN:
                     if event.button == 1 and RESET_BUTTON.collidepoint(event.pos):
                         reset_all_objects()
-                        status_message = "All objects reset"
+                        status_message = "Object reset"
                         status_color = GREEN
 
             if not running:
@@ -753,7 +749,7 @@ def run_application():
                             status_color = GREEN
 
                         else:
-                            status_message = "Pinch near an object to select"
+                            status_message = "Pinch near the object to select"
                             status_color = CYAN
 
                     else:
